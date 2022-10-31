@@ -104,19 +104,30 @@ int main()
 
     // Кол-во элментов
     unsigned int n;
-    cout << "Enter number of element:\n";
-    cin >> n;
+    if (randomInput == 'Y')
+    {
+        n = rand() % 11 + 5; 
+    }
+    else
+    {
+        cout << "Enter number of element:\n";
+        cin >> n;
+    }
     // Защита от ввода слишком большого массива с клавиатуры
     if (n > maxN) n = maxN;
     // Массив элментов
     int * arr = new int[n];
-    
-
-    cout << "Enter " << n << " elements:\n";
+    if (randomInput != 'Y') cout << "Enter " << n << " elements:\n";
     for (int i = 0; i < n; i++)
-    {
-        //cin >> arr[i];
-        arr[i] = rand() % 200 - 100;
+    {   
+        if (randomInput == 'Y')
+        {
+            arr[i] = rand() % 200 - 100;
+        }
+        else 
+        {
+           cin >> arr[i];
+        }
     }
 
     Tree tree(arr);
