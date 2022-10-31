@@ -2,26 +2,6 @@
 
 using namespace std;
 
-/*
-int main()
-{   
-    int array[10] = {16, 11, 9, 10, 5, 6, 8, 1, 2, 4};
-    int arrayLen = 10;
-    int buffer;
-    int i = 1;
-
-    while (arrayLen != 1)
-    {   
-        buffer = array[0];
-        array[0] = array[arrayLen - i];
-        array[arrayLen - i] = buffer;
-        i++;
-    }
-
-    return 0;
-}
-*/
-
 // Реализация пирамидальной сортировки на C++
 #include <iostream>
 
@@ -42,6 +22,8 @@ class Tree
         void heapSort(int);
         // Конструктор
         Tree(int *);
+        // Деструктор
+        ~Tree();
 };
 
 Tree :: Tree(int * arr)
@@ -49,6 +31,10 @@ Tree :: Tree(int * arr)
     this->arr = arr;
 }
 
+Tree :: ~Tree()
+{
+    delete arr;
+}
 
 // Процедура для преобразования в двоичную кучу поддерева с корневым узлом i, что является
 // индексом в arr[]. n - размер кучи
@@ -79,19 +65,20 @@ void Tree :: heapify(int n, int i)
 
 
 // Основная функция, выполняющая пирамидальную сортировку
+// O(n*log(n))
 void Tree :: heapSort(int n)
 {
-  // Построение кучи (перегруппируем массив)
+    // Построение кучи (перегруппируем массив)
     for (int i = n / 2 - 1; i >= 0; i--)
         heapify(n, i);
 
-   // Один за другим извлекаем элементы из кучи
+    // Один за другим извлекаем элементы из кучи
     for (int i=n-1; i>=0; i--)
     {
         // Перемещаем текущий корень в конец
         swap(arr[0], arr[i]);
 
-        // вызываем процедуру heapify на уменьшенной куче
+        // Вызываем процедуру heapify на уменьшенной куче
         heapify(i, 0);
     }
 }
@@ -107,8 +94,30 @@ void Tree :: printArray(int n)
 // Управляющая программа
 int main()
 {
-    int arr[] = {12, 11, 13, 5, 6, 7};
-    int n = sizeof(arr)/sizeof(arr[0]);
+    // Максимальное кол-во элементов
+    int maxN = 16;
+
+    // Возможность ввода с клавиатуры / случайного ввода
+    char randomInput = false;
+    cout << "Do you want random input? Y/N\n";
+    cin >> randomInput;
+
+    // Кол-во элментов
+    unsigned int n;
+    cout << "Enter number of element:\n";
+    cin >> n;
+    // Защита от ввода слишком большого массива с клавиатуры
+    if (n > maxN) n = maxN;
+    // Массив элментов
+    int * arr = new int[n];
+    
+
+    cout << "Enter " << n << " elements:\n";
+    for (int i = 0; i < n; i++)
+    {
+        //cin >> arr[i];
+        arr[i] = rand() % 200 - 100;
+    }
 
     Tree tree(arr);
 
@@ -119,5 +128,8 @@ int main()
 
     cout << "Sorted array is \n";
     tree.printArray(n);
+
+    delete &tree;
+
     return 0;
 }
