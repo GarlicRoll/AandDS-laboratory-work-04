@@ -22,7 +22,7 @@ class Tree
         // Стандартное заполнение вывода для stdout
         void fillScreen();
         // Вывод дерева в stdout
-        void printScreen();
+        void printScreen(int);
         // Преобразование в двоичную кучу
         void heapify(int, int);
         // Пирамидальная сортировка
@@ -108,15 +108,17 @@ void Tree :: printTree(int n, int r, int c, int i)
     if (i < n)
     {
         r++;
-        this->screen[r][c] = '*';
+        this->screen[r][c] = static_cast<char>(this->arr[i]) + 65;
         this->printTree(n, r, c + (12 >> r), 2 * i + 1);
         this->printTree(n, r, c - (12 >> r), 2 * i + 2);
     }
 }
 
 // Вывод дерева в stdout
-void Tree :: printScreen()
-{
+void Tree :: printScreen(int n)
+{   
+    this->fillScreen();
+    this->printTree(n, 0, 15, 0);
     for (int i = 0; i < 10; i++)
     {
         for (int j = 0; j < 30; j++)
@@ -166,7 +168,7 @@ int main()
     {   
         if (randomInput == 'Y')
         {
-            arr[i] = rand() % 200 - 100;
+            arr[i] = rand() % 100;
         }
         else 
         {
@@ -179,14 +181,15 @@ int main()
     cout << "Array is \n";
     tree.printArray(n);
 
-    tree.fillScreen();
-    tree.printTree(n, 0, 15, 0);
-    tree.printScreen();
+    
+    tree.printScreen(n);
 
     tree.heapSort(n);
 
     cout << "Sorted array is \n";
     tree.printArray(n);
+
+    tree.printScreen(n);
 
     delete &tree;
 
