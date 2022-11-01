@@ -12,10 +12,17 @@ class Tree
 {   
     private:
         int * arr;
+        char screen[10][30];
 
     public:
         // Вывод дерева как строка
-        void printArray(int); 
+        void printArray(int);
+        // Вывод дерева
+        void printTree(int, int, int, int);
+        // Стандартное заполнение вывода для stdout
+        void fillScreen();
+        // Вывод дерева в stdout
+        void printScreen();
         // Преобразование в двоичную кучу
         void heapify(int, int);
         // Пирамидальная сортировка
@@ -83,6 +90,43 @@ void Tree :: heapSort(int n)
     }
 }
 
+// Заполнение экрана стандратными символами
+void Tree :: fillScreen()
+{
+    for (int i = 0; i < 10; i++)
+    {
+        for (int j = 0; j < 30; j++)
+        {
+            this->screen[i][j] = '-';
+        }
+    }
+}
+
+// Вывод дерева
+void Tree :: printTree(int n, int r, int c, int i)
+{
+    if (i < n)
+    {
+        r++;
+        this->screen[r][c] = '*';
+        this->printTree(n, r, c + (12 >> r), 2 * i + 1);
+        this->printTree(n, r, c - (12 >> r), 2 * i + 2);
+    }
+}
+
+// Вывод дерева в stdout
+void Tree :: printScreen()
+{
+    for (int i = 0; i < 10; i++)
+    {
+        for (int j = 0; j < 30; j++)
+        {
+            cout << this->screen[i][j];
+        }
+        cout << "\n";
+    }
+}
+
 // Вспомогательная функция для вывода на экран массива размера n
 void Tree :: printArray(int n)
 {
@@ -134,6 +178,10 @@ int main()
 
     cout << "Array is \n";
     tree.printArray(n);
+
+    tree.fillScreen();
+    tree.printTree(n, 0, 15, 0);
+    tree.printScreen();
 
     tree.heapSort(n);
 
